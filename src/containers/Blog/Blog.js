@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../axios';
 import './Blog.css';
 import Posts from './Posts/Posts';
-import {Route} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import NewPost from './NewPost/NewPost';
 
 class Blog extends Component {
@@ -19,8 +19,20 @@ class Blog extends Component {
                 <header>
                     <nav>
                         <ul>
-                            <li><a href='/'>Home</a></li>
-                            <li><a href='/new-post'>New Post</a></li>
+                            {/* --------------------Using links to switch pages. -----------------------------
+                            Tek sada smo primjenili pravi routing. Dok smo korisitli obični anchor tag, svaki put je bio reload
+                            što se navodno moglo vidjeti u network tabu chormed dev toolsa. 
+                            VAŽNO: Routing radi sve dok korisnik ne upiše u borweru izravno neku sub-adresu neše stranice. Onda će se server poslati novu stranicu
+                            jer jednostvno tako internet funkcionira. Znači sa routingom kontroliramo što se događa kada korisnik klinkne na linkove na našoj stranici.
+                            VAŽNO: na ovom primjer hash i search prop-ovi nemaju nikakvu korist, tu su samo radi primjera. Ovaj hash je onaj link prema 'id' tj. kada
+                            //se load-a /new-post onda će se viewport visina spustiti do elementa sa 'id' submit.
+                            Ne znam točno što je ovaj 'serach' atribut, treba saznati što to napravi */}
+                            <li><Link to='/'>Home</Link></li>
+                            <li><Link to={{
+                                pathname: '/new-post',
+                                hash: '#submit',
+                                search: '?quick-submit=true'
+                            }}>New Post</Link></li>
                         </ul>
                     </nav>
                 </header>

@@ -9,14 +9,21 @@ class NewPost extends Component {
         author: 'Max'
     }
 
+    componentDidMount(){
+        //VAŽNO: ovaj this. props predstvlja normalno props objekt, ali react router ubaci porp-ove imena: history,location,match,staticContex automatski.
+        //VAŽNO: to se ne naslijeđuje i samo ona komponeta koju ubaicmo unutar <Route/> tj. postavimo je na prop componente unutar toga Route će imati pristup
+        // tim podacima
+        //Treba otkriti jel moguće postaviti svoje custom, tj. normalne prop-ove za tu komponetu koja je unutar <Route/> 
+        console.log('NewPost.js-this.props', this.props);
+    }
+
     postDataHandler=()=>{
      const data={
       title: this.state.title,
       body: this.state.content,
       author: this.state.author 
      }
-     //VAŽNO:axios automatski pretvara ovaj objekt gori u JSON, te je također kada smo korisili get metodu automatski pretovrio onaj promise čiji je PromiseValue onaj json objekt
-     // u obični objekt   
+  
      axios.post('/posts', data)
      .then(response=>{
          console.log(response);

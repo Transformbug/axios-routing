@@ -13,7 +13,7 @@ class App extends Component {
    console.log('App.js, componentDidMount metoda');
   }
   
-
+// VAŽNO: BrowserRotuer se temelj svega i samo one komponte koje su unutar njega mogu korisiti routing sposobnosti. Znači obično se korisit u index.js ili App.js
   render() {
     console.log('App.js, render metoda')
     return (

@@ -13,12 +13,14 @@ class Posts extends Component {
 
     componentDidMount() {
         console.log('Posts.js, componentDidMount metoda')
+
+        console.log('Posts.js- this.props',this.props);
       
         axios.get('/posts')
        .then(response=> {
         const posts=response.data.slice(0,4)
         const updatedPosts=posts.map(post=>{
-        //VAŽNO: ovo je onaj slučaj kada ne treba staviti key i value unutar objekta jer su istoga imena.    
+    
             return {
                 ...post,
                 author: 'Max'
@@ -26,9 +28,9 @@ class Posts extends Component {
         })   
         this.setState({posts: updatedPosts}); 
         console.log(response)
-        //Pažnja: pristupili smo gori propertyu 'data' koji je jedan od proprties unutar toga response objekta
+ 
         console.log(posts)
-        //Znači  razlika između posts i updatePosts je ovaj author : 'Max'
+      
        
        } 
      )
@@ -53,6 +55,9 @@ class Posts extends Component {
          key={post.id} 
          title= {post.title} 
          author={post.author}
+         //VAŽNO: sa ovim prebacujemo one prop-ove koje React-router ubacimo automatski ovaj child komponenti Post.To je jedan od načina.
+         //Mogli smo birat, naravno, koje ćemo prop-ove prebaciti koje React-router automstki ubacuje, recimo, this.props.match ili this.props.location
+        //  {...this.props}
          clicked={()=>this.postSelectedHandler(post.id)}
           />
      })
