@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../../axios';
 import Post from '../../../components/Post/Post';
 import './Posts.css';
-import {Link} from 'react-router-dom';
+
 
 class Posts extends Component {
     
@@ -41,7 +41,13 @@ class Posts extends Component {
     }
 
     postSelectedHandler=(id)=>{
-        this.setState({selectedPostId: id})
+        //VAŽNO:
+        //Ova push metoda na history prop imenu koju react router ubaci nam omgućuje da odemo na neku url adresu bez da se klikne na neki link.
+        //Doli smo u render metodi makli <Link> koji je omota cijeli post i sa ovim smo omoguči da sve radi i bez toga Link elementa. 
+       this.props.history.push({pathname: '/'+ id})
+       console.log(this.props.history);
+       //Alternativa: ne moramo ubacit objekt.
+    //    this.props.history.push('/'+ id)
        }
 
 
@@ -51,17 +57,16 @@ class Posts extends Component {
         if(!this.state.error) { 
         console.log('Posts.js, render metoda')
       posts= this.state.posts.map(post=>{
-        /* Alternativa switch rješenju, ali nekad će nam baš trebati Switch */
-        // '/posts/'+ post.id
+     
          return (
-         <Link to={'/'+ post.id} key={post.id}> <Post 
+           <Post 
         
          title= {post.title} 
          author={post.author}
-     
+         key={post.id}
          clicked={()=>this.postSelectedHandler(post.id)}
           />
-          </Link>
+       
           )
      })
     }
