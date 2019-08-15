@@ -4,20 +4,20 @@ import './Blog.css';
 import Posts from './Posts/Posts';
 import {Route, NavLink, Switch} from 'react-router-dom';
 import NewPost from './NewPost/NewPost';
-import FullPost from './FullPost/FullPost';
+
 
 class Blog extends Component {
 
-    componentDidUpdate() {
+   componentDidUpdate() {
         console.log('Blog.js, componentDidUpdate metoda')
     }
 
     componentDidMount(){
-        console.log('Blog.js, componendDidMount');
+        console.log('Blog.js, componendDidMount metoda');
     }
    
     render () {
-       
+       console.log('Blog.js, render metoda');
      
         return (
             <div className="Blog">
@@ -25,14 +25,14 @@ class Blog extends Component {
                     <nav>
                         <ul>
                           <li><NavLink 
-                               to='/'
+                               to='/posts/'
                               exact
                               activeClassName='my-active'
                               activeStyle={{
                                  color: '#fa923f',
                                  textDecoration: 'underline' 
-                                 //OVDJE JE STAVIO POSTS TEXT ZA OVAJ LINK, PRIJE JE BILO HOME,LEKCIJA 234.
-                              }}   >Posts</NavLink></li>
+                                 
+                              }}  >Posts</NavLink></li>
                             <li><NavLink to={{
                                pathname: '/new-post',
                                 hash: '#submit',
@@ -41,13 +41,15 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
-    
-
-               <Route path="/" exact component={Posts}/>
+                    
+                 {/* VAŽNO: kad je riječ o nested routers, treba pazit jer ako recimo ova komponta Posts nije prikazana jer je path kriv, neće se ni njegov
+                child FullPost moći vidjeti    */}
+               
+               
                  <Switch> 
-                <Route path="/new-post" exact component={NewPost}/>
-                <Route path="/:id" exact component={FullPost}/>
-               </Switch>
+               <Route path="/new-post" component={NewPost}/>
+               <Route path="/posts" component={Posts}/>
+                 </Switch>
               
            
              </div>

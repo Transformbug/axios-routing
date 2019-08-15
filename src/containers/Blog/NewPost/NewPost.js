@@ -16,6 +16,10 @@ class NewPost extends Component {
         
     }
 
+    componentDidUpdate(){
+        console.log('NewPost.js', 'ComponentDidUpadate metoda');
+    }
+
     postDataHandler=()=>{
      const data={
       title: this.state.title,
