@@ -10,11 +10,13 @@ class NewPost extends Component {
     }
 
     componentDidMount(){
-        //VAŽNO: ovaj this. props predstvlja normalno props objekt, ali react router ubaci porp-ove imena: history,location,match,staticContex automatski.
-        //VAŽNO: to se ne naslijeđuje i samo ona komponeta koju ubaicmo unutar <Route/> tj. postavimo je na prop componente unutar toga Route će imati pristup
-        // tim podacima
-        //Treba otkriti jel moguće postaviti svoje custom, tj. normalne prop-ove za tu komponetu koja je unutar <Route/> 
-        console.log('NewPost.js-this.props', this.props);
+       // VAŽNO: lekcija 231, parsing query parametars and the Fragemnt. btw. za razliku od toga pisanog primjera, ja koristim NavLink umjesto Link i 
+       // query parametars(ono iza ?) nije na 'to' parametrau Link komponete nego je na search propu Navlinka. Očito ove metode rade u oba slučaja.
+       //Čak i kad je pathname NavLinka ima te query paramtere izravno ne sebi radi ovo 'pristupanjje' doli, samo tada NewPost se ne load-a ispravno
+       // jer pathname nije točan. Ali iz nekog razloga kad refresham na toj stranici se pojavai ovaj NewPost u tom slučaju, ali link ne radi.
+        console.log('NewPost.js-this.props.location.search=', this.props.location.search);
+        console.log('NewPost.js-this.props.location.hash=', this.props.location.hash);
+        
     }
 
     postDataHandler=()=>{

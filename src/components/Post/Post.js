@@ -1,11 +1,10 @@
 import React from 'react';
 
 import './Post.css';
-import {withRouter} from 'react-router-dom';
 
-//VAŽNO: uvozimo withRouter, on nam omogućuje da imamo pristup onim props keys koje react-router ubaci u parent komponetu ove kompnete(parent koristi <Route/>)
+
 const post = (props) => {
-      console.log('Post.js-props,',props)
+    //   console.log('Post.js-props,',props)
     return (
     <article className="Post" onClick={props.clicked}>
         <h1> {props.title} </h1>
@@ -16,4 +15,4 @@ const post = (props) => {
     )
 };
 
-export default withRouter(post);
+export default post;

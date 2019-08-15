@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../../axios';
 import Post from '../../../components/Post/Post';
 import './Posts.css';
+import {Link} from 'react-router-dom';
 
 class Posts extends Component {
     
@@ -48,18 +49,20 @@ class Posts extends Component {
         let posts=<p style={{textAlign: 'center'}}>Something went wrong!</p>
       
         if(!this.state.error) { 
-        console.log('Blog.js, render metoda')
+        console.log('Posts.js, render metoda')
       posts= this.state.posts.map(post=>{
-          
-         return <Post 
-         key={post.id} 
+        /* Alternativa switch rješenju, ali nekad će nam baš trebati Switch */
+        // '/posts/'+ post.id
+         return (
+         <Link to={'/'+ post.id} key={post.id}> <Post 
+        
          title= {post.title} 
          author={post.author}
-         //VAŽNO: sa ovim prebacujemo one prop-ove koje React-router ubacimo automatski ovaj child komponenti Post.To je jedan od načina.
-         //Mogli smo birat, naravno, koje ćemo prop-ove prebaciti koje React-router automstki ubacuje, recimo, this.props.match ili this.props.location
-        //  {...this.props}
+     
          clicked={()=>this.postSelectedHandler(post.id)}
           />
+          </Link>
+          )
      })
     }
 

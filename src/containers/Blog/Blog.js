@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import axios from '../../axios';
 import './Blog.css';
 import Posts from './Posts/Posts';
-import {Route, Link} from 'react-router-dom';
+import {Route, NavLink, Switch} from 'react-router-dom';
 import NewPost from './NewPost/NewPost';
+import FullPost from './FullPost/FullPost';
 
 class Blog extends Component {
 
     componentDidUpdate() {
         console.log('Blog.js, componentDidUpdate metoda')
+    }
+
+    componentDidMount(){
+        console.log('Blog.js, componendDidMount');
     }
    
     render () {
@@ -19,41 +24,59 @@ class Blog extends Component {
                 <header>
                     <nav>
                         <ul>
-                            {/* --------------------Using links to switch pages. -----------------------------
-                            Tek sada smo primjenili pravi routing. Dok smo korisitli obični anchor tag, svaki put je bio reload
-                            što se navodno moglo vidjeti u network tabu chormed dev toolsa. 
-                            VAŽNO: Routing radi sve dok korisnik ne upiše u borweru izravno neku sub-adresu neše stranice. Onda će se server poslati novu stranicu
-                            jer jednostvno tako internet funkcionira. Znači sa routingom kontroliramo što se događa kada korisnik klinkne na linkove na našoj stranici.
-                            VAŽNO: na ovom primjer hash i search prop-ovi nemaju nikakvu korist, tu su samo radi primjera. Ovaj hash je onaj link prema 'id' tj. kada
-                            //se load-a /new-post onda će se viewport visina spustiti do elementa sa 'id' submit.
-                            Ne znam točno što je ovaj 'serach' atribut, treba saznati što to napravi */}
-                            <li><Link to='/'>Home</Link></li>
-                            <li><Link to={{
-                                pathname: '/new-post',
+                           {/* VAŽNO: sada kada smo stavili NavLink automatski dobijemo na ovoj komponet klasu(ne pseudo klasu) imena 'active'.Dobijemo i aria-current
+                         atribut. Ukoliko ne želimo korisiti tu klasu active onda možemo korisiti activeClassName prop i staviti ime klase koje mi želimo.On je ovo
+                         stavio kao primjer nigdje nije napisao css sa klasom my-active. activeStyle prop je akvivalent postvljanu inline css-a navodno.  */}
+                            <li><NavLink 
+                               to='/'
+                              exact
+                              activeClassName='my-active'
+                              activeStyle={{
+                                 color: '#fa923f',
+                                 textDecoration: 'underline' 
+                              }}   >Home</NavLink></li>
+                            <li><NavLink to={{
+                               pathname: '/new-post',
                                 hash: '#submit',
                                 search: '?quick-submit=true'
-                            }}>New Post</Link></li>
+                            }}>New Post</NavLink></li>
                         </ul>
                     </nav>
                 </header>
-                {/*--------------------------------- Setting up rendering paths lekcija-početak-------------------------------------- */}
-                {/* Značenje path atribute tj. propa ovisi o tome jesmo li dodali prop exact(boolean true mu je value)
-                Ako nema propa exact onda path znači ukoliko neki path počinje sa onim što je value path neka se izvrši ono što je postavljeno
-                na render prop.Kada stavimo exact onda znači neka se izvrši render samo ako je točan cijeli path 
-                VAŽNO: možemo primjtit da ovaj prvi home se printa dok smo na localhost 3000. Očito ta adresa nije samo '/'. Gori možemo vidjeti href unutar achora
-                koji ima kao value samo "/". Očito se ne računa ništa prije ove zadnje crte http://localhost:3000/ tek je pitanje ima li što izda te crte poput
-                 http://localhost:3000/new-post Pošto kada kliknemo na new post se pojavi desno nešto iza te '/' onda to više na zadovljava uvjet ovog prvog
-                 patha koji ima exact. 
-                 Sa weba: You will see here that we write the relative path by beginning that path with a forward slash (/). 
-                 That character tells the browser to go to the root of the current directory.  
-                 VAŽNO: znači možemo zaključit da exact ne gleda samo točan absolute path, nego može proći i točan relative path, ali mora biti skorz točan relative p.*/}
-                {/* <Route path="/" exact render={()=> <h1>Home</h1>}/>
-                <Route path="/" render={()=> <h1>Home 2</h1>}/> */}
-                {/*------------------------------ Kraj setting up rendering paths lekcija -------------------------...............*/}
+                {/* VAŽNO: kad je riječ o linkovima treba razlikovati absolute, root relative i relative path. Ono šta Max tvrdi da su absolute path u lekciji
+                aboslute vs realtive je root-relative(vidi yt video,3:40, dcode). Znači kada neki link ima samo '/' kao prvi skozr lijevi element to znači da je
+                uvijek linkati na početnu domain i ako ne želimo da uvijek linka to onda mu sa desna strane dodajemo recimo 'new-post'. Znači kada vidimo
+                na skorz prvom lijevom mjestu '/' (btw. bez točki ispred, što mijenja skroz značnje) možemo uvijek zamisliti ime neke adresse time http://www.example.com/
+                To znači da ako smo recimo na adresi  http://www.example.com/about-us i neki link na toj stranici ima ovu adresu  /images/image-01.jpg  to znači
+                da će nas linkati na http://www.example.com/images/image-01.jpg 
+                Uglavnom Max-ov video je na to temu bio jako zbunjujući i nepotreban.
+                Relative path je kada imamo recimo 'image-01.jpg' ili './image-01.jpg' ili '../image-01.jpg' to relativan u odnosu na current working directory ne
+                nije realtivan u odnosu na root. A absolute je kada se napiše i protokool znači htttp i domain i on se treba korisiti za externe resurese.
+                VAŽNO: neki izvori, ovaj root relative kojeg sam gori opisao nazivaju, absolute path, short verion  */  }
 
-                {/* Kada želimo korisiti komponentu onda treba korisiti ovaj 'component' prop. */}
+               
+            {/* VAŽNO: Samo se jedna komponeta koja je unutar Switch-a može load-ati odjednom.
+              VAŽNO: Ovaj id btw. nije dio url već je će postatiti poperty name na 'params'(ne prop!) objektu koji se se nalazi onom match objektu koji react-router automaski 
+                ubaci kao jedan od prop keysa te komponte koja korisit <Route/>. Možemo to nazvati kako hoćemo. Vrijednost toga 'id' će biti bilo koji string koji će
+                biti iza "/" na link elementu koji pokrene taj <Route/> koji ima taj dinamični path sa ':'
+                VAŽNO: dok ne obavimo omatanje sa switch ili promjenimo adresu pa dodamo /posts/ ispred id svaki put kada kliknemo na new-link zadovljimo
+                ovaj uvjet unutar path="/new-post" i onda se prikaže kompnenta NewPost.js. ALI također se zadovovlji path="/:id" jer to znači root element i bilo
+                što iza pa nam se prikaže komponeta FullPost koja u sebi ima lifecylce metodu componentDidMount koja zove get axios metodu sa this.props.match.params.id
+                a taj id je string koji je iza '/' kada se neki path aktivira jer je ="/:id" zadovoljen, pa zato se zove ta get metoda sa new-post(umjesto onih /1,/2 brojeve) i 
+                dobijemo u konzoli error.
+                VAŽNO: kad koristimo Switch onda to znači da će se smo jedan od path moći loadati u isto vrijeme, a ako više path-ova zadovoljava uvjet onda će se samo onaj
+                path koji je iznda u rasporedu atktivirati tj. load-ati će svoju komponentu. Zato je bilo bitno staviti new-post iznad :id kada koristmo Switch.
+                VAŽNO: kada ne koristmo Swtich raspored nema nikakve veze, samo je redoslijed prikazivanja biti drugačiji. Kad kliknmo New Post oba path će zadvoljniti
+                uvjete i oba će se lodati i redosliejd jedino utječe na koji je iznda, koji je ispod.
+               
+                
+                {/* <Switch> */}
                 <Route path="/" exact component={Posts}/>
                 <Route path="/new-post" exact component={NewPost}/>
+                <Route path="/:id" exact component={FullPost}/>
+               {/* </Switch> */}
+               {/* Alternativa switch, rješenju, ali nekad će nam baš trebati Switch */}
+               {/* "/posts/:id" */}
              </div>
         );
     }

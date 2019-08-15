@@ -16,8 +16,10 @@
     color: black;
 }
 
+/*Pažnja: ovo je klasa active koju na NavLink kompoonet automtski stavi react-router*/
 .Blog a:hover,
-.Blog a:active{
+.Blog a:active,
+.Blog a.active{
 color: #fa923f
     }
 
