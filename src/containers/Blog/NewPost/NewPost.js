@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './NewPost.css';
+import {Redirect} from 'react-router-dom';
 
 class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Max'
+        author: 'Max',
+        submitted: false
     }
 
     componentDidMount(){
@@ -30,12 +32,26 @@ class NewPost extends Component {
      axios.post('/posts', data)
      .then(response=>{
          console.log(response);
+         //Onda je ovdje imao ondaj re-direct(navingating Programatically lekcija,233) sa kojim smo se već ranije susreli sa history.push() i pokazo je ovu metodu replace.
+         //VAŽNO: ova replace metoda također nas odvee na ovaj root doamina/posts, ali kad kliknemo na brower botun 'back' uvijek nas ostavi na toj stranici
+         //gdje smo re-redirectani dok nas .push vrati na New Post. Nešto  je jako krato govorio o brower stacking webpages i tim botunima 'forward' i 'back' u ranijm lekcijama.
+         //Imam bookmark, ali nije bilo previše detaljno.
+        //  this.props.history.push('/posts')
+        // this.props.history.replace('/posts')
+        
+        //Prvo je sa ovim doli pokazo primjer conditional re-directa. Znači kad kliknemo na post botun onda će se dogoditi re-direct.
+        //  this.setState({submitted: true})
      })
     }
 
     render () {
+        let redirect=null;
+        if(this.state.submitted){
+          redirect= <Redirect to='/posts'/>
+        }
         return (
             <div className="NewPost">
+                {redirect}
                 <h1>Add a Post</h1>
                 <label>Title</label>
                 <input type="text" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} />

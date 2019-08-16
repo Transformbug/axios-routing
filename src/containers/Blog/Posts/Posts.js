@@ -71,7 +71,10 @@ class Posts extends Component {
      //VAŽNO: Sve što smo naučili o obično lifecycle updatu vrijedi, vrijedi također i za ove elemente koje imaju Route u sebi ili o <Route/> ovisi hoće li biti prikazani.
      // Konkretno to znači, da ukoliko sa setState promjenimo state nekog child-a neće se uopće aktivirati parent. Samo sada znamo da i nešto drugo osim setState može 
      //aktivrati re-render i da su pravila malo drugačija za taj drugi način.   
-
+     
+     //UPDATE: Često će se događati da će  promjena vrijednosti path propa na Route uzorkovati taj. lifecyle hooks aktivaciju i onda te lifecyle metode imaju u sebi
+     //setState fn.call-ove i onda kada se završe taj proces koji je pokrenut sa <Rotue path=drugačiji> će se normalno dogoditi lifecycle faza koju uzroku setState
+     // i odvijati će se po normalnim pravilima. 
 
     render() {
         
