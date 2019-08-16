@@ -15,6 +15,7 @@ class NewPost extends Component {
      
         console.log('NewPost.js-this.props.location.search=', this.props.location.search);
         console.log('NewPost.js-this.props.location.hash=', this.props.location.hash);
+       
         
     }
 
@@ -32,15 +33,7 @@ class NewPost extends Component {
      axios.post('/posts', data)
      .then(response=>{
          console.log(response);
-         //Onda je ovdje imao ondaj re-direct(navingating Programatically lekcija,233) sa kojim smo se već ranije susreli sa history.push() i pokazo je ovu metodu replace.
-         //VAŽNO: ova replace metoda također nas odvee na ovaj root doamina/posts, ali kad kliknemo na brower botun 'back' uvijek nas ostavi na toj stranici
-         //gdje smo re-redirectani dok nas .push vrati na New Post. Nešto  je jako krato govorio o brower stacking webpages i tim botunima 'forward' i 'back' u ranijm lekcijama.
-         //Imam bookmark, ali nije bilo previše detaljno.
-        //  this.props.history.push('/posts')
-        // this.props.history.replace('/posts')
-        
-        //Prvo je sa ovim doli pokazo primjer conditional re-directa. Znači kad kliknemo na post botun onda će se dogoditi re-direct.
-        //  this.setState({submitted: true})
+    
      })
     }
 

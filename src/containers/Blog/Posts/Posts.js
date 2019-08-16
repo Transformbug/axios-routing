@@ -57,24 +57,7 @@ class Posts extends Component {
   
        }
 
-     //EKSTREMNO VAŽNO: jedina način uz aktivaciju setState-za re-render neka komponte je promjena statusa path propa unutar <Route/> komponente.
-     // Kada neki path postane prvi put aktivan, pokrenuti će se componet lifecyle cretion faza tj. mounting faza te komponete koja je na propu component unutar <Route/>.
-     //Također je bitno spomenuti da će se pokrenuti i lifecylce update faza njegove parent komponente(ovo prije naravno). To je u suprotnosi sa normalnim re-renerom sa setState
-     //gdje promjne state objekta unutar child komponente neće izazvati re-render parent komponente.
-     // Ukoliko imamo situacija sa nested routes tj. ako parent toga <Route path> koji je postao aktivan također unutar <Route path/> u file-u gdje je importan, tada će
-     // se dogoditi da će se i taj nazovima ga grandfather aktivirati, tj. aktivirati će se njegova update lifecyle faza prije svega. Drugi ancesori koji ne returnaju u jsx
-     // niti jedan <Route/> neće se aktivirati kad se dogodit da lifecyle hooks aktivacija radi promjene path prop value na Route.
-     //Ako idući klik tj. event uzrokuje da taj path koji je postao aktivan više više ne bude aktivan jer path nije točan, onda će se dogoditi lifecyle un-mounting faza te
-     // komponte, dok će parent, granfather itd. opet imati lifecyle update fazu.
-     //VAŽNO: može se dogoditi da taj aktivan <Route path> čija je componenta mount-ana promjeni vrijednost path, ali da taj path bude još uvijek točan, pa se dogoditi
-     //upadate lifecyle faza te komponte, dok će parent, grandfater opet imati standardu update lifecylce fazu.
-     //VAŽNO: Sve što smo naučili o obično lifecycle updatu vrijedi, vrijedi također i za ove elemente koje imaju Route u sebi ili o <Route/> ovisi hoće li biti prikazani.
-     // Konkretno to znači, da ukoliko sa setState promjenimo state nekog child-a neće se uopće aktivirati parent. Samo sada znamo da i nešto drugo osim setState može 
-     //aktivrati re-render i da su pravila malo drugačija za taj drugi način.   
-     
-     //UPDATE: Često će se događati da će  promjena vrijednosti path propa na Route uzorkovati taj. lifecyle hooks aktivaciju i onda te lifecyle metode imaju u sebi
-     //setState fn.call-ove i onda kada se završe taj proces koji je pokrenut sa <Rotue path=drugačiji> će se normalno dogoditi lifecycle faza koju uzroku setState
-     // i odvijati će se po normalnim pravilima. 
+
 
     render() {
         
