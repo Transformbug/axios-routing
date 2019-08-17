@@ -17,6 +17,7 @@ class App extends Component {
   render() {
     console.log('App.js, render metoda')
     return (
+      //VAŽNO: Browser-router ima prop imena basename. Vidi cijelu lekiciju 244.-'Routing and Server Deployment'
       <BrowserRouter> 
       <div className="App">
         <Blog />

@@ -13,14 +13,14 @@ class NewPost extends Component {
 
     componentDidMount(){
      
-        console.log('NewPost.js-this.props.location.search=', this.props.location.search);
-        console.log('NewPost.js-this.props.location.hash=', this.props.location.hash);
+        // console.log('NewPost.js-this.props.location.search=', this.props.location.search);
+        // console.log('NewPost.js-this.props.location.hash=', this.props.location.hash);
        
         
     }
 
     componentDidUpdate(){
-        console.log('NewPost.js', 'ComponentDidUpadate metoda');
+        // console.log('NewPost.js', 'ComponentDidUpadate metoda');
     }
 
     postDataHandler=()=>{

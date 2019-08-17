@@ -3,13 +3,20 @@ import axios from '../../axios';
 import './Blog.css';
 import Posts from './Posts/Posts';
 import {Route, NavLink, Switch,Redirect} from 'react-router-dom';
-import NewPost from './NewPost/NewPost';
+// import NewPost from './NewPost/NewPost';
+import asyncComponent from '../../hoc/asyncComponent';
+      {/* VAŽNO: Ova tehnika se zove lazy loading ili code splitting. */}
 
+const AsyncNewPost=asyncComponent(()=>{
+    return import('./NewPost/NewPost')
+})
+
+console.log(AsyncNewPost);
 
 class Blog extends Component {
 
     state={
-        auth: false
+        auth: true
     }
 
    componentDidUpdate() {
@@ -46,30 +53,21 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
+          
                     
+               {/* //VAŽNO:ovo sam izvukao vanka da potvrdim da ovo radi i izvan Route, Max je u idućoj lekciji je zbunjeno krivo rekao da je prednost React.lazy() što radi i za ostale
+               //conditonal rendere, ali jasno je da ovo radi i bez Route i možemo na ovaj način lazy loadat nešto.
+                {this.state.auth? <AsyncNewPost/>: null} */}
+              
+              <Switch>  
+               {this.state.auth?<Route path="/new-post" component={AsyncNewPost}/>: null}
                
-    
-               {/*----------------Početak,Working with Guards, lekcija 240.
-                VAŽNO: Ako želimo sprijčiti da netko ode na neku Route jer nema autentifikaciju ispravnu, na ovaj način to radimo u Reactu. Obični conditonal render
-               Route componente. Kad kliknemo na New Post, onda se ne load-a ta komponenta nego nas ovaj Rediraect(koji ima samo '/'  što očito znači da je dosta da neki
-               path počitnje sa root domain da se to ativira) vrati na /posts.
-               Moguće je još re-directati na neki path gdje želimo vratiti korisnika ako nema ispravu auth, na način da nemamo ovdje conditional render nego imamo obični 
-               Route element i onda na nekoj od njegove lifecyle metoda sa onim metodama(push,replace) na history propu vratimo korisnika. */}
-                 {/* <Switch> 
-               {this.state.auth?<Route path="/new-post" component={NewPost}/>: null}
-               <Route path="/posts" component={Posts}/>
-               <Redirect from='/' to='/posts' />
-               </Switch> */}
-               {/* Kraj, Working with Guards, lekcija 240 */}
-             
-               {/* Handling 404 case(unknow routes) */}
-               {/* VAŽNO: Mogli smo kreirati komponentu za 404 slučaj i korisiti component porp na Route, ali smo ovako napravili sa render prop-om.
-               Znači ovaj Route bez path propa je jedan od načina je da riješimo situacija da se zatraži neki path koji ne zadovoljava niti jedan path prop ostalih Route.
-               Drugi način je onaj primjer gori sa re-directom, gdje se također zatraži neki path koji ne zadovoljni niti jedan path, ali onda Redirect obavi svoje.
-               VAŽNO: treba paziti da kada unutar Switch imamo neki Redirect koji ima value '/' na from propu, onda će samo taj Redirect raditi ili ovaj Rote bez path-a 
-               ovisno o tome tko je prije u rasporedu.*/}
-               <Switch>  
-               {this.state.auth?<Route path="/new-post" component={NewPost}/>: null}
+               {/* VAŽNO: Treba imati na umu da je ovaj Route tj. prop path praktički conditonal render. Tek ako se zadovolji taj path onda će se aktivirati tj. pokazati
+               // komponenta na propu component. Pa stoga i kada imao code kao doli, kad pogledamo na network tab vidimo da tek kada odemo na New Post load-a AsyncNewPost
+               //  i to na lazy mode način jer se pojavi onaj 'chunk'. Znači tek kada se aktivra componetDidMount komponete Mate će se dogodit update lifecyle čiji će return
+               //biti ta 'teška i velika' komponenta  New Post koju smo htjeli lazy loadati tj. load-ti tek kad se koristi. 
+               <Route path="/new-post" component={AsyncNewPost}/> */}
+              
                <Route path="/posts" component={Posts}/>
                 <Route render={()=> <h1>Page not found</h1>}/>
                </Switch>
